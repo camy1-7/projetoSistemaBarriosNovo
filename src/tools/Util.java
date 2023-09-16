@@ -10,6 +10,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -37,6 +38,9 @@ public class Util { //ao vc atribuir o comando "STATIC" ao metodo, ele não prec
             if(componente instanceof JCheckBox){
                 ((JCheckBox) componente).setSelected(false);
             }  
+            /*if(componente instanceof JPasswordField){
+                ((JPasswordField) componente).setText("");
+            }*/
         }
     }
     
