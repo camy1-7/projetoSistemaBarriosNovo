@@ -15,6 +15,43 @@ import org.hibernate.criterion.Restrictions;
  * @author DELL
  */
 public class UsuarioDAO extends DAO_Abstract{
+    
+    ClbUsuario clbUsuario;
+    
+    /*public ClbUsuario validarSenha(String apelido, String senha){
+        //Inicia Conexao
+        session.beginTransaction();
+        //Puxa os Dados do Banco
+        //clbUsuario = (ClbUsuario)session.load(ClbUsuario.class,apelido);
+        Criteria criteria = session.createCriteria(ClbUsuario.class); 
+        clbUsuario = (ClbUsuario)session.createCriteria("clbApelidoUsuario", apelido);
+        clbUsuario = (ClbUsuario)session.createCriteria("clbSenha", senha);
+        //clbUsuario.setClbApelidoUsuario(apelido);
+        //clbUsuario.setClbSenha(senha);
+        //List lista = criteria.list(); 
+        //Fecha Conexao
+        session.beginTransaction().commit();
+        //Retorna os Dados
+        //return lista;
+        return clbUsuario;
+    }*/
+    
+    public boolean listLogin(String apelido, String senha) {
+        session.beginTransaction(); //iniciando
+        Criteria criteria = session.createCriteria(ClbUsuario.class); //o criteria é pedir pro hibernate criar um select chamando a tabela 
+        criteria.add(Restrictions.like("clbApelidoUsuario", apelido )); //a chave primaria e o valor desejado.
+        criteria.add(Restrictions.eq("clbSenha", senha)); //a chave primaria e o valor desejado.
+        //eq = equals (igual)
+        List lista = criteria.list(); //criteria é = select from * (tabela desejada)
+        session.getTransaction().commit(); //finalizando 
+        
+        if (lista.size() == 1) {
+            return true;
+        } else {
+              lista.isEmpty(); 
+              return false;
+        }
+    }
 
     @Override
     public void insert(Object object) {//todas as operações ocm bd são feitas com transações(ações)

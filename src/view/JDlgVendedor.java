@@ -5,6 +5,9 @@
  */
 package view;
 
+import bean.ClbVendedor;
+import dao.VendedorDAO;
+import java.util.List;
 import tools.Util;
 
 /**
@@ -16,7 +19,9 @@ public class JDlgVendedor extends javax.swing.JDialog {
     /**
      * Creates new form JDlgVendedorNovo
      */
-    
+    VendedorDAO vendedorDAO;
+    ClbVendedor clbVendedor;
+    VendedorController vendedorController;
     JDlgVendedorIA jDlgVendedorIA;
     
     public JDlgVendedor(java.awt.Frame parent, boolean modal) {
@@ -25,7 +30,14 @@ public class JDlgVendedor extends javax.swing.JDialog {
         setTitle("Tabela de Vendedor");
         setLocationRelativeTo(null);
         jDlgVendedorIA = new JDlgVendedorIA(null, true);
+
+        vendedorController = new VendedorController();
+        vendedorDAO = new VendedorDAO();
+        List lista = vendedorDAO.listAll();
+        vendedorController.setList(lista);
+        jTable1.setModel(vendedorController);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -119,13 +131,22 @@ public class JDlgVendedor extends javax.swing.JDialog {
         //criando a tela de VendedorIA
         jDlgVendedorIA.setTitle("Inclusão");
         jDlgVendedorIA.setVisible(true);
+        List lista = vendedorDAO.listAll();
+        vendedorController.setList(lista);
     }//GEN-LAST:event_jBtnClb_IncluirActionPerformed
 
     private void jBtnClb_ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ExcluirActionPerformed
         // TODO add your handling code here:
         //trás o método perguntar do UTIL para o botão excluir. 
-        if(Util.perguntar("Deseja excluir o usuário?") == true){
-            //fazer alguma coisa
+        if (Util.perguntar("Deseja excluir o registro?") == true) {
+            int sel = jTable1.getSelectedRow();
+            clbVendedor = vendedorController.getBean(sel);
+            vendedorDAO.delete(clbVendedor);
+            //atualizar a lista no jtable
+            List lista = vendedorDAO.listAll();
+            vendedorController.setList(lista);
+        } else {
+            Util.mensagem("Exclusão cancelada.");
         }
     }//GEN-LAST:event_jBtnClb_ExcluirActionPerformed
 

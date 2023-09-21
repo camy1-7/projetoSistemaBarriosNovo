@@ -5,9 +5,9 @@
  */
 package view;
 
+import bean.ClbUsuario;
+import dao.UsuarioDAO;
 import java.awt.Color;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import tools.Util;
 
@@ -17,6 +17,10 @@ import tools.Util;
  */
 public class JFrmLogin extends javax.swing.JFrame {
 
+    private int contador;
+    ClbUsuario clbUsuario;
+    UsuarioDAO usuarioDAO;
+    
     /**
      * Creates new form JFrmLogin
      */
@@ -24,6 +28,7 @@ public class JFrmLogin extends javax.swing.JFrame {
         initComponents();
         setTitle("Login de Usuários");
         setLocationRelativeTo(null);
+        usuarioDAO = new UsuarioDAO();
     }
     
     
@@ -39,8 +44,8 @@ public class JFrmLogin extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTxtLoginUsuario = new javax.swing.JTextField();
-        jPwfLoginSenha = new javax.swing.JPasswordField();
+        jTxtClb_LoginUsuario = new javax.swing.JTextField();
+        jPwfClb_LoginSenha = new javax.swing.JPasswordField();
         jBtnLoginAcessar = new javax.swing.JButton();
         jBtnLoginCancelar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -51,26 +56,26 @@ public class JFrmLogin extends javax.swing.JFrame {
 
         jLabel2.setText("Senha:");
 
-        jTxtLoginUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
+        jTxtClb_LoginUsuario.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTxtLoginUsuarioFocusGained(evt);
+                jTxtClb_LoginUsuarioFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jTxtLoginUsuarioFocusLost(evt);
+                jTxtClb_LoginUsuarioFocusLost(evt);
             }
         });
 
-        jPwfLoginSenha.addFocusListener(new java.awt.event.FocusAdapter() {
+        jPwfClb_LoginSenha.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jPwfLoginSenhaFocusGained(evt);
+                jPwfClb_LoginSenhaFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                jPwfLoginSenhaFocusLost(evt);
+                jPwfClb_LoginSenhaFocusLost(evt);
             }
         });
-        jPwfLoginSenha.addActionListener(new java.awt.event.ActionListener() {
+        jPwfClb_LoginSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPwfLoginSenhaActionPerformed(evt);
+                jPwfClb_LoginSenhaActionPerformed(evt);
             }
         });
 
@@ -102,8 +107,8 @@ public class JFrmLogin extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1)
-                            .addComponent(jTxtLoginUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
-                            .addComponent(jPwfLoginSenha)
+                            .addComponent(jTxtClb_LoginUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
+                            .addComponent(jPwfClb_LoginSenha)
                             .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(40, 40, 40)
@@ -124,11 +129,11 @@ public class JFrmLogin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTxtLoginUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTxtClb_LoginUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(11, 11, 11)
-                .addComponent(jPwfLoginSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPwfClb_LoginSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnLoginAcessar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -144,7 +149,7 @@ public class JFrmLogin extends javax.swing.JFrame {
         //quando clicar em acessar devesse entrar no JFrmPrincipal e ter acesso ao sistema
         
         // login antigo
-        if(jTxtLoginUsuario.getText().equals("barrios") && jPwfLoginSenha.getText().equals("senha123")){
+        /*if(jTxtLoginUsuario.getText().equals("barrios") && jPwfLoginSenha.getText().equals("senha123")){
             JFrmPrincipal jFrmPrincipal = new JFrmPrincipal();
             jFrmPrincipal.setVisible(true);
             //JOptionPane.showMessageDialog(null , "Deu certo");
@@ -155,42 +160,53 @@ public class JFrmLogin extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null , "Usuario ou senha incorretos");
            
-        }
-        
-        Util.limparCampos();
+        }*/
          
+        if (usuarioDAO.listLogin(jTxtClb_LoginUsuario.getText(), jPwfClb_LoginSenha.getText()) == true ) { 
+            JFrmPrincipal jFrmPrincipal = new JFrmPrincipal();
+            jFrmPrincipal.setVisible(true);
+            dispose(); //fecha a tela de login
+           } else { 
+            JOptionPane.showMessageDialog(null , "Usuario ou senha incorretos");
+            contador ++;
+        }  
         
+        Util.limparCampos(jTxtClb_LoginUsuario, jPwfClb_LoginSenha);
+        
+        if(contador == 3){
+            System.exit(0);
+        }
 
     }//GEN-LAST:event_jBtnLoginAcessarActionPerformed
 
-    private void jTxtLoginUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTxtLoginUsuarioFocusGained
+    private void jTxtClb_LoginUsuarioFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTxtClb_LoginUsuarioFocusGained
         // TODO add your handling code here:
-        jTxtLoginUsuario.setBackground(Color.lightGray);
-    }//GEN-LAST:event_jTxtLoginUsuarioFocusGained
+        jTxtClb_LoginUsuario.setBackground(Color.lightGray);
+    }//GEN-LAST:event_jTxtClb_LoginUsuarioFocusGained
 
-    private void jTxtLoginUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTxtLoginUsuarioFocusLost
+    private void jTxtClb_LoginUsuarioFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTxtClb_LoginUsuarioFocusLost
         // TODO add your handling code here:
-        jTxtLoginUsuario.setBackground(Color.WHITE);
-    }//GEN-LAST:event_jTxtLoginUsuarioFocusLost
+        jTxtClb_LoginUsuario.setBackground(Color.WHITE);
+    }//GEN-LAST:event_jTxtClb_LoginUsuarioFocusLost
 
-    private void jPwfLoginSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPwfLoginSenhaFocusGained
+    private void jPwfClb_LoginSenhaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPwfClb_LoginSenhaFocusGained
         // TODO add your handling code here:
-        jPwfLoginSenha.setBackground(Color.lightGray);
-    }//GEN-LAST:event_jPwfLoginSenhaFocusGained
+        jPwfClb_LoginSenha.setBackground(Color.lightGray);
+    }//GEN-LAST:event_jPwfClb_LoginSenhaFocusGained
 
-    private void jPwfLoginSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPwfLoginSenhaFocusLost
+    private void jPwfClb_LoginSenhaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPwfClb_LoginSenhaFocusLost
         // TODO add your handling code here:
-        jPwfLoginSenha.setBackground(Color.WHITE);
-    }//GEN-LAST:event_jPwfLoginSenhaFocusLost
+        jPwfClb_LoginSenha.setBackground(Color.WHITE);
+    }//GEN-LAST:event_jPwfClb_LoginSenhaFocusLost
 
     private void jBtnLoginCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLoginCancelarActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jBtnLoginCancelarActionPerformed
 
-    private void jPwfLoginSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPwfLoginSenhaActionPerformed
+    private void jPwfClb_LoginSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPwfClb_LoginSenhaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPwfLoginSenhaActionPerformed
+    }//GEN-LAST:event_jPwfClb_LoginSenhaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,7 +250,7 @@ public class JFrmLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPasswordField jPwfLoginSenha;
-    private javax.swing.JTextField jTxtLoginUsuario;
+    private javax.swing.JPasswordField jPwfClb_LoginSenha;
+    private javax.swing.JTextField jTxtClb_LoginUsuario;
     // End of variables declaration//GEN-END:variables
 }

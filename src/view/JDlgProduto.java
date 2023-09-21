@@ -5,6 +5,10 @@
  */
 package view;
 
+
+import bean.ClbProduto;
+import dao.ProdutoDAO;
+import java.util.List;
 import tools.Util;
 
 /**
@@ -16,7 +20,9 @@ public class JDlgProduto extends javax.swing.JDialog {
     /**
      * Creates new form JDlgProdutoNovo
      */
-    
+    ProdutoDAO produtoDAO;
+    ClbProduto clbProduto;
+    ProdutoController produtoController;
     JDlgProdutoIA jDlgProdutoIA;
     
     public JDlgProduto(java.awt.Frame parent, boolean modal) {
@@ -24,7 +30,13 @@ public class JDlgProduto extends javax.swing.JDialog {
         initComponents();
         setTitle("Tabela de Produtos");
         setLocationRelativeTo(null);
+        
         jDlgProdutoIA = new JDlgProdutoIA(null, true);
+        produtoController = new ProdutoController();
+        produtoDAO = new ProdutoDAO();
+        List lista = produtoDAO.listAll();
+        produtoController.setList(lista);
+        jTable1.setModel(produtoController);
     }
 
     /**
@@ -110,6 +122,9 @@ public class JDlgProduto extends javax.swing.JDialog {
         //criando a tela de ProdutoIA
         jDlgProdutoIA.setTitle("Inclusão");
         jDlgProdutoIA.setVisible(true);
+        //atualizar a lista no jtable
+        List lista = produtoDAO.listAll();
+        produtoController.setList(lista);
     }//GEN-LAST:event_jBtnClb_IncluirActionPerformed
 
     private void jBtnClb_AlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_AlterarActionPerformed
@@ -122,8 +137,15 @@ public class JDlgProduto extends javax.swing.JDialog {
     private void jBtnClb_ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ExcluirActionPerformed
         // TODO add your handling code here:
         //trás o método perguntar do UTIL para o botão excluir. 
-        if(Util.perguntar("Deseja excluir o usuário?") == true){
-            //fazer alguma coisa
+        if (Util.perguntar("Deseja excluir o registro?") == true) {
+            int sel = jTable1.getSelectedRow();
+            clbProduto = produtoController.getBean(sel);
+            produtoDAO.delete(clbProduto);
+            //atualizar a lista no jtable
+            List lista = produtoDAO.listAll();
+            produtoController.setList(lista);
+        } else {
+            Util.mensagem("Exclusão cancelada.");
         }
     }//GEN-LAST:event_jBtnClb_ExcluirActionPerformed
 

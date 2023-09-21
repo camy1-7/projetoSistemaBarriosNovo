@@ -5,7 +5,15 @@
  */
 package view;
 
+import bean.ClbVendedor;
+import dao.VendedorDAO;
 import java.awt.Color;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.MaskFormatter;
 import tools.Util;
 
 /**
@@ -14,6 +22,13 @@ import tools.Util;
  */
 public class JDlgVendedorIA extends javax.swing.JDialog {
 
+    VendedorDAO vendedorDAO;
+    ClbVendedor clbVendedor;
+    
+    MaskFormatter mascaraCpf; // declarei um objeto -- mascara do cpf ja adicionei a importação
+    MaskFormatter mascaraDataNascimento;
+    MaskFormatter mascaraTelefone;
+    MaskFormatter mascaraRg;
     /**
      * Creates new form JDlgVendedorNovoIA
      */
@@ -22,6 +37,46 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
         initComponents();
         setTitle("Incluisão ou Alteração");//o titulo muda de acordo com o botão que seja escolhido na tela de UsuariosNovo
         setLocationRelativeTo(null);
+        
+        vendedorDAO = new VendedorDAO();
+        
+        try {
+            mascaraCpf = new MaskFormatter("###.###.###-##");
+            mascaraDataNascimento = new MaskFormatter("##/##/####");
+            mascaraTelefone = new MaskFormatter("(##)#####-####");
+            mascaraRg = new MaskFormatter("#.###.###");
+        } catch (ParseException ex) {
+            Logger.getLogger(JDlgVendedor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       jFmtClb_Cpf.setFormatterFactory(new DefaultFormatterFactory(mascaraCpf)); //instancia a mascara e passou a mascara pro campo
+       jFmtClb_Nascimento.setFormatterFactory(new DefaultFormatterFactory(mascaraDataNascimento));
+       jFmtClb_Telefone.setFormatterFactory(new DefaultFormatterFactory(mascaraTelefone));
+       jFmtClb_Rg.setFormatterFactory(new DefaultFormatterFactory(mascaraRg));
+    }
+    
+    public ClbVendedor viewBean(){
+        ClbVendedor clbVendedor = new ClbVendedor(); //cria o bean 
+        
+        //pega oq esta na tela e joga para o bean
+        int id = Integer.valueOf(jTxtClb_IdVendedor.getText());
+        clbVendedor.setClbIdvendedor(id);
+        clbVendedor.setClbNomeVendedor(jTxtClb_Nome.getText());
+        clbVendedor.setClbEmail(jTxtClb_Email.getText());
+        clbVendedor.setClbCpf(jFmtClb_Cpf.getText());
+        clbVendedor.setClbRg(jFmtClb_Rg.getText());
+        //string para data 
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); // cria o objeto que vai transformar a string para data
+        try {
+            clbVendedor.setClbDataNascimento(formato.parse(jFmtClb_Nascimento.getText())); //utiliza o metodo parse -> que faz a transformação
+        } catch (ParseException ex) {
+            //Logger.getLogger(JDlgVendedor.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Erro!"+ex.getMessage());
+        }
+        clbVendedor.setClbSalario(Double.parseDouble( jTxtClb_Salario.getText()));
+        clbVendedor.setClbSexo(jCboClb_Sexo.getSelectedIndex());
+        clbVendedor.setClbTelefone(jFmtClb_Telefone.getText());
+        
+        return clbVendedor; 
     }
 
     /**
@@ -369,10 +424,8 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
 
     private void jBtnClb_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConfirmarActionPerformed
         // TODO add your handling code here:
-        /*Util.habilitar(false, jTxtClb_IdVendedor, jTxtClb_Nome, jTxtClb_Email, jTxtClb_Salario, jFmtClb_Cpf, jFmtClb_Nascimento, jFmtClb_Rg, jFmtClb_Telefone, jCboClb_Sexo, jBtnClb_Confirmar, jBtnClb_Cancelar); //habilita os campos
-        Util.habilitar(true, jBtnClb_Confirmar, jBtnClb_Cancelar); //desabilita os campos
-        Util.limparCampos();*/
-        
+        ClbVendedor clbVendedor = viewBean();
+        vendedorDAO.insert(clbVendedor);
         setVisible(false);
     }//GEN-LAST:event_jBtnClb_ConfirmarActionPerformed
 

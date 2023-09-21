@@ -52,8 +52,8 @@ public class Util { //ao vc atribuir o comando "STATIC" ao metodo, ele não prec
        // JOptionPane.showMessageDialog(null, cadeia);
        //fazer se um if se clicar yes -> retorna true e se clicar no -> retorna false
        
-        JOptionPane.showConfirmDialog(null, cadeia, "Perguntar", JOptionPane.YES_NO_OPTION); //yes.no.option -> pq queremos somente os botoes de sim e não
-        int resp = 0;
+        
+        int resp = JOptionPane.showConfirmDialog(null, cadeia, "Perguntar", JOptionPane.YES_NO_OPTION); //yes.no.option -> pq queremos somente os botoes de sim e não
         if (resp == JOptionPane.YES_OPTION){
             return true;
         } else{

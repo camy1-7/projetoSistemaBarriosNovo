@@ -5,6 +5,7 @@
  */
 package view;
 
+import bean.ClbCliente;
 import bean.ClbUsuario;
 import dao.UsuarioDAO;
 import java.awt.Color;
@@ -27,7 +28,8 @@ public class JDlgUsuario extends javax.swing.JDialog {
     private boolean incluindo; //variavel tipo booleana, nome -> incluindo --- para poder usar em todos os lugares, declaramos ela como global
     MaskFormatter mascaraCpf; // declarei um objeto -- mascara do cpf ja adicionei a importação
     MaskFormatter mascaraDataNascimento;
-    
+    public ClbUsuario clbUsuario; //variavel global do bean
+    public UsuarioDAO usuarioDAO; //variavel global do dao
     /**
      * Creates new form JDialogUsuario
      */
@@ -35,11 +37,15 @@ public class JDlgUsuario extends javax.swing.JDialog {
         //colocando titulo e deixando a pagina no meio
         super(parent, modal);
         initComponents();
+        usuarioDAO = new UsuarioDAO(); //cria o usuarioDAO 
+        
         //desabilitar
         Util.habilitar(false, jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel, jBtnClb_Confirmar, jBtnClb_Cancelar ); //habilita os campos
         Util.habilitar(true, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar);//desabilita os campos
+        
         setTitle("Cadastro de Usuários");
         setLocationRelativeTo(null);
+        
         try {
             mascaraCpf  = new MaskFormatter("###.###.###-##");
             mascaraDataNascimento  = new MaskFormatter("##/##/####");
@@ -132,12 +138,14 @@ public class JDlgUsuario extends javax.swing.JDialog {
         clbUsuario.setClbCpf(jFmtClb_Cpf.getText());
         clbUsuario.setClbSenha(jPwfClb_Senha.getText());
         clbUsuario.setClbNivel(jCboClb_Nivel.getSelectedIndex());
-        if(jChbClb_Ativo.isSelected() == true){ //pergunta se o campo ativo esta selecionado
+        /*if(jChbClb_Ativo.isSelected() == true){ //pergunta se o campo ativo esta selecionado
             clbUsuario.setClbAtivo("S");
         }else{
             clbUsuario.setClbAtivo("N");
-        }
-        return clbUsuario; //
+        }*/
+        
+        clbUsuario.setClbAtivo(jChbClb_Ativo.isSelected() == true ? "S" : "N"); //operador ternario 
+        return clbUsuario; 
     }
     
     public void beanView(ClbUsuario clbUsuario){//pega do bean e joga na tela -- o parametro é o bean
@@ -461,26 +469,25 @@ public class JDlgUsuario extends javax.swing.JDialog {
         //habilitar();
         Util.habilitar(true, jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel, jBtnClb_Confirmar, jBtnClb_Cancelar); //habilita os campos
         Util.habilitar(false, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar); //desabilita os campos
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel);
         incluindo = true; // quando clicar aqui o incluindo = true. 
     }//GEN-LAST:event_jBtnClb_IncluirActionPerformed
 
     private void jBtnClb_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConfirmarActionPerformed
         // TODO add your handling code here:
         //declarou um objeto do tipo Bean -> e o objeto recebe viewBean -> Bean recebe Bean
-        /*ClbUsuario clbUsuario = viewBean();
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
+     
+        clbUsuario = viewBean(); //cria o bean pegando a variavel global 
         
-        if(incluindo == true){
+        if (incluindo == true){
             usuarioDAO.insert(clbUsuario);
         }else{
             usuarioDAO.update(clbUsuario);
-        }*/
+        }
         
-        //desabilitar();
         Util.habilitar(false, jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel, jBtnClb_Confirmar, jBtnClb_Cancelar); //habilita os campos
         Util.habilitar(true, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar); //desabilita os campos
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel);
         
     }//GEN-LAST:event_jBtnClb_ConfirmarActionPerformed
 
@@ -489,7 +496,7 @@ public class JDlgUsuario extends javax.swing.JDialog {
         //desabilitar();
         Util.habilitar(false, jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel, jBtnClb_Confirmar, jBtnClb_Cancelar); //habilita os campos
         Util.habilitar(true, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar); //desabilita os campos
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel);
     }//GEN-LAST:event_jBtnClb_CancelarActionPerformed
 
     private void jChbClb_AtivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jChbClb_AtivoActionPerformed
@@ -592,15 +599,24 @@ public class JDlgUsuario extends javax.swing.JDialog {
         }else{
             JOptionPane.showMessageDialog(null, "Exclusão cancelada.", "Alerta", 2); //em ordem os parametros são: centraliza em relação a tela, menssagem, titulo e numero da imagem
         } */
+        
+        
         if(Util.perguntar("Deseja excluir o usuário?") == true){
-            //fazer alguma coisa
+            clbUsuario = viewBean(); //chama a variavel golbal  o bean 
+            usuarioDAO.delete(clbUsuario);
+        }else{
+            Util.mensagem("Exclusão Cancelada!");
         }
-        Util.limparCampos();
+       
+        Util.limparCampos(jTxtClb_Codigo, jTxtClb_Nome, jTxtClb_Apelido, jFmtClb_Cpf, jFmtClb_Nascimento, jPwfClb_Senha, jChbClb_Ativo, jCboClb_Nivel);
     }//GEN-LAST:event_jBtnClb_ExcluirActionPerformed
 
     private void jBtnClb_PesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_PesquisarActionPerformed
         // TODO add your handling code here:
-        String resp = JOptionPane.showInputDialog(null, "Entre com o id ou código (PK)", "Tela de Pesquisa", 2);//retorna uma string
+        //set chama a tela de pesquisa do usuarios
+        JDlgUsuarioPesquisa jDlgUsuarioPesquisa = new JDlgUsuarioPesquisa(null, true);
+        jDlgUsuarioPesquisa.setTelaAnterior(this); //importante ter  -> o this é a tela jDlgUsuarios (o this se refre a si mesmo) 
+        jDlgUsuarioPesquisa.setVisible(true);
     }//GEN-LAST:event_jBtnClb_PesquisarActionPerformed
 
     /**

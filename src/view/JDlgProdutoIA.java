@@ -16,7 +16,9 @@ import tools.Util;
  */
 public class JDlgProdutoIA extends javax.swing.JDialog {
 
-    private boolean incluindo; //variavel tipo booleana, nome -> incluindo --- para poder usar em todos os lugares, declaramos ela como global
+    ProdutoDAO produtoDAO;
+    ClbProduto clbProduto;
+    
     
     /**
      * Creates new form JDlgProdutoNovoIA
@@ -26,10 +28,11 @@ public class JDlgProdutoIA extends javax.swing.JDialog {
         initComponents();
         setTitle("Incluisão ou Alteração");//o titulo muda de acordo com o botão que seja escolhido na tela de UsuariosNovo
         setLocationRelativeTo(null);
+        produtoDAO = new ProdutoDAO();
     }
     
     public ClbProduto viewBean(){
-        ClbProduto clbProduto = new ClbProduto(); //cria o bean 
+        clbProduto = new ClbProduto(); //cria o bean 
         
         //pega oq esta na tela e joga para o bean
         int id = Integer.valueOf(jTxtClb_IdProduto.getText());
@@ -44,17 +47,6 @@ public class JDlgProdutoIA extends javax.swing.JDialog {
         return clbProduto; 
     }
     
-    public void beanView(ClbProduto clbProduto){//pega do bean e joga na tela -- o parametro é o bean
-        //mostrar na tela os dados
-        String valor = String.valueOf(clbProduto.getClbIdproduto()); //converter inteiro para string por causa do Text -- a string valor recebe o valor do inteiro
-        jTxtClb_IdProduto.setText(valor); 
-        jTxtClb_Nome.setText(clbProduto.getClbNomeProduto());
-        jTxtClb_Autor.setText(clbProduto.getClbAutor());
-        jTxtClb_Editora.setText(clbProduto.getClbEditora());
-        jTxtClb_Preco.setText(String.valueOf(clbProduto.getClbPreco()));
-        jTxtClb_Assunto.setText(clbProduto.getClbAssunto());
-    
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -334,21 +326,8 @@ public class JDlgProdutoIA extends javax.swing.JDialog {
 
     private void jBtnClb_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConfirmarActionPerformed
         // TODO add your handling code here:
-        //declarou um objeto do tipo Bean -> e o objeto recebe viewBean -> Bean recebe Bean
-        /*ClbProduto clbProduto = viewBean();
-        ProdutoDAO produtoDAO = new ProdutoDAO();
-        
-        if(incluindo == true){
-            produtoDAO.insert(clbProduto);
-        }else{
-            produtoDAO.update(clbProduto);
-        }*/
-        
-        //desabilitar();
-        //Util.habilitar(false, jTxtClb_IdProduto, jTxtClb_Nome, jTxtClb_Assunto, jTxtClb_Autor, jTxtClb_Editora, jTxtClb_Preco, jBtnClb_Confirmar, jBtnClb_Cancelar); //habilita os campos
-        //Util.habilitar(true, jBtnClb_Confirmar, jBtnClb_Cancelar); //desabilita os campos
-        //Util.limparCampos();
-        
+        clbProduto = viewBean();
+        produtoDAO.insert(clbProduto);
         setVisible(false);
     }//GEN-LAST:event_jBtnClb_ConfirmarActionPerformed
 

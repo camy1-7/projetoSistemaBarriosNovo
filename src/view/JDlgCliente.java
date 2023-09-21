@@ -29,6 +29,8 @@ public class JDlgCliente extends javax.swing.JDialog {
     MaskFormatter mascaraTelefone;
     MaskFormatter mascaraCep;
     MaskFormatter mascaraRg;
+    public ClbCliente clbCliente; //variavel global do bean
+    public ClienteDAO clienteDAO; //variavel global do dao
     
     /**
      * Creates new form JDlgCliente
@@ -38,6 +40,8 @@ public class JDlgCliente extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Cadastro de Cliente");
+        clienteDAO = new ClienteDAO(); //cria o usuarioDAO 
+        
         //desabilitar();
         Util.habilitar(false, jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda, jBtnClb_Confirmar, jBtnClb_Cancelar ); //habilita os campos
         Util.habilitar(true, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar);//desabilita os campos
@@ -676,7 +680,7 @@ public class JDlgCliente extends javax.swing.JDialog {
         //habilitar();
         Util.habilitar(true, jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda, jBtnClb_Confirmar, jBtnClb_Cancelar ); //habilita os campos
         Util.habilitar(false, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar);//desabilita os campos
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda);
         incluindo = true;
     }//GEN-LAST:event_jBtnClb_IncluirActionPerformed
 
@@ -685,13 +689,15 @@ public class JDlgCliente extends javax.swing.JDialog {
         //desabilitar();
         Util.habilitar(false, jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda, jBtnClb_Confirmar, jBtnClb_Cancelar ); //habilita os campos
         Util.habilitar(true, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar);//desabilita os campos
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda);
     }//GEN-LAST:event_jBtnClb_CancelarActionPerformed
 
     private void jBtnClb_PesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_PesquisarActionPerformed
         // TODO add your handling code here:
-          //resp = resposta
-        String resp = JOptionPane.showInputDialog(null, "Entre com o id ou código (PK)", "Tela de Pesquisa", 2);//retorna uma string
+        //set chama a tela de pesquisa do clientes
+        JDlgClientePesquisa jDlgClientePesquisa = new JDlgClientePesquisa(null, true);
+        jDlgClientePesquisa.setTelaAnterior(this); //importante ter  -> o this é a tela jDlgUsuarios (o this se refre a si mesmo)
+        jDlgClientePesquisa.setVisible(true);
         
     }//GEN-LAST:event_jBtnClb_PesquisarActionPerformed
 
@@ -706,19 +712,17 @@ public class JDlgCliente extends javax.swing.JDialog {
     private void jBtnClb_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConfirmarActionPerformed
         // TODO add your handling code here:
         //declarou um objeto do tipo Bean -> e o objeto recebe viewBean -> Bean recebe Bean
-        /*ClbCliente clbCliente = viewBean();
-        ClienteDAO clienteDAO = new ClienteDAO();
         
-        if(incluindo == true){
+        clbCliente = viewBean(); //cria o bean pegando a variavel global 
+        
+        if (incluindo == true){
             clienteDAO.insert(clbCliente);
         }else{
             clienteDAO.update(clbCliente);
-        }*/
-        
-        //desabilitar();
+        }
         Util.habilitar(false, jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda, jBtnClb_Confirmar, jBtnClb_Cancelar ); //habilita os campos
         Util.habilitar(true, jBtnClb_Alterar, jBtnClb_Excluir, jBtnClb_Incluir, jBtnClb_Pesquisar);//desabilita os campos
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda);
     }//GEN-LAST:event_jBtnClb_ConfirmarActionPerformed
 
     private void jTxtClb_IdClienteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTxtClb_IdClienteFocusGained
@@ -852,6 +856,7 @@ public class JDlgCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_jCboClb_EstadoCivilFocusLost
 
     private void jBtnClb_ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ExcluirActionPerformed
+
         // TODO add your handling code here:
         /*int resp = JOptionPane.showConfirmDialog(null, "Deseja excluir o registro?", "Confirmar", JOptionPane.YES_NO_OPTION, 0); //yes.no.option -> pq queremos somente os botoes de sim e não
         if (resp == JOptionPane.YES_OPTION){
@@ -865,9 +870,12 @@ public class JDlgCliente extends javax.swing.JDialog {
         limparCampos();*/
         
         if(Util.perguntar("Deseja excluir o usuário?") == true){
-            //fazer alguma coisa
+            clbCliente = viewBean(); //chama a variavel golbal  o bean 
+            clienteDAO.delete(clbCliente);
+        }else{
+            Util.mensagem("Exclusão Cancelada!");
         }
-        Util.limparCampos();
+        Util.limparCampos(jTxtClb_IdCliente, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Cpf, jFmtClb_Rg,jCboClb_Sexo, jFmtClb_Nascimento, jTxtClb_Email,jFmtClb_Cep,jTxtClb_Endereco,jTxtClb_Bairro,jTxtClb_Cidade, jCboClb_EstadoCivil, jCboClb_ComposicaoFamiliar, jTxtClb_Renda);
     }//GEN-LAST:event_jBtnClb_ExcluirActionPerformed
 
     private void jCboClb_SexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCboClb_SexoActionPerformed
