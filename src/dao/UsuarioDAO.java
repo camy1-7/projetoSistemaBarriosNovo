@@ -8,6 +8,7 @@ package dao;
 import bean.ClbUsuario;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -39,7 +40,8 @@ public class UsuarioDAO extends DAO_Abstract{
     public boolean listLogin(String apelido, String senha) {
         session.beginTransaction(); //iniciando
         Criteria criteria = session.createCriteria(ClbUsuario.class); //o criteria é pedir pro hibernate criar um select chamando a tabela 
-        criteria.add(Restrictions.like("clbApelidoUsuario", apelido )); //a chave primaria e o valor desejado.
+        criteria.add(Restrictions.eq("clbApelidoUsuario", apelido )); //a chave primaria e o valor desejado.
+        //criteria.add(Restrictions.like("clbApelidoUsuario", apelido )); //a chave primaria e o valor desejado.
         criteria.add(Restrictions.eq("clbSenha", senha)); //a chave primaria e o valor desejado.
         //eq = equals (igual)
         List lista = criteria.list(); //criteria é = select from * (tabela desejada)
@@ -48,7 +50,7 @@ public class UsuarioDAO extends DAO_Abstract{
         if (lista.size() == 1) {
             return true;
         } else {
-              lista.isEmpty(); 
+              lista.isEmpty(); //Retorna um valor Boolean indicando se um variável foi inicializado.
               return false;
         }
     }
@@ -97,6 +99,42 @@ public class UsuarioDAO extends DAO_Abstract{
         session.beginTransaction(); //sempre faz uma transação, independente se manda ou pega registros
         //antes o comando sql que fazia o listAll era o "SELECT * from tabela" que agora substitui pela criação de um objeto
         Criteria criteria = session.createCriteria(ClbUsuario.class); //importa o bean e a classe Criteria
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listNome(String nome){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbUsuario.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbNomeUsuario", "%" + nome + "%")); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        //criteria.add(Restrictions.like("nome", nome, MatchMode.ANYWHERE)); 
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listCpf(String cpf){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbUsuario.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbCpf", "%" + cpf + "%")); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        //criteria.add(Restrictions.like("cpf", cpf, MatchMode.ANYWHERE)); 
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listCpfNome(String nome, String cpf){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbUsuario.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbNomeUsuario", "%" + nome + "%"));
+        criteria.add(Restrictions.like("clbCpf", "%" + cpf + "%"));
         List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
         session.getTransaction().commit();
         return lista; //retorna a lista com os beans
