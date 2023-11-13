@@ -67,15 +67,15 @@ public class Util { //ao vc atribuir o comando "STATIC" ao metodo, ele não prec
     }
     
     public static String intStr(int num){
-        return "";
+        return String.valueOf(num);
     }
     
-    public static double strDouble(double card){
-        return 0;
+    public static double strDouble(double cad){
+        return Double.valueOf(cad);
     }
     
-    public static String doubleStr(double card){
-        return "";
+    public static String doubleStr(double num){
+        return String.valueOf(num);
     }
     
     public static Date strDate(double card){

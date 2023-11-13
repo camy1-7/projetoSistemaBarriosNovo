@@ -34,7 +34,7 @@ public class ClienteController extends AbstractTableModel{
 
     @Override
     public int getColumnCount() {//pegar quantidade de colunas
-        return 4; //retorna o numero de colunas
+        return 5; //retorna o numero de colunas
     }
 
     @Override
@@ -51,6 +51,9 @@ public class ClienteController extends AbstractTableModel{
    }
         if(columnIndex == 3){
        return clbCliente.getClbCpf(); //retorna o cpf
+   }
+        if(columnIndex == 4){
+       return clbCliente.getClbEstadoCivil(); //retorna o cpf
    }
         return "";
     }
@@ -69,6 +72,9 @@ public class ClienteController extends AbstractTableModel{
    }
        if(column == 3){
        return "CPF";
+   }
+       if(column ==4){
+       return "Estado Cívil";
    }
         return ""; //o metodo precisa de um retorno, se não entrar em nenhum if, ele retorna nada.
     }

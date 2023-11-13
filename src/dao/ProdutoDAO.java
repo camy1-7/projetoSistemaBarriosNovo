@@ -64,4 +64,41 @@ public class ProdutoDAO extends DAO_Abstract{
         return lista; //retorna a lista com os beans
     }
     
+    public List listAutor(String autor){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbProduto.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbAutor", "%" + autor + "%")); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        //criteria.add(Restrictions.like("nome", nome, MatchMode.ANYWHERE)); 
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listEditora(String editora){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbProduto.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbEditora", "%" + editora + "%")); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        //criteria.add(Restrictions.like("nome", nome, MatchMode.ANYWHERE)); 
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listAutorEditora(String autor, String editora){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbProduto.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbAutor", "%" + autor + "%"));
+        criteria.add(Restrictions.like("clbEditora", "%" + editora + "%"));
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    
 }

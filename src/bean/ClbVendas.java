@@ -98,6 +98,7 @@ public class ClbVendas  implements java.io.Serializable {
     public void setClbValorTotal(double clbValorTotal) {
         this.clbValorTotal = clbValorTotal;
     }
+   
 
 
 

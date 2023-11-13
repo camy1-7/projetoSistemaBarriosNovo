@@ -34,7 +34,7 @@ public class ProdutoController extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {//pegar quantidade de colunas
-        return 4; //retorna o numero de colunas
+        return 5; //retorna o numero de colunas
     }
 
     @Override
@@ -53,6 +53,9 @@ public class ProdutoController extends AbstractTableModel {
         if(columnIndex == 3){
        return clbProduto.getClbPreco(); //retorna o preço do produto
    }
+        if(columnIndex == 4){
+       return clbProduto.getClbEditora(); //retorna o preço do produto
+   }
         return ""; //o metodo precisa de um retorno, se não entrar em nenhum if, ele retorna nada. 
     }
     
@@ -69,6 +72,9 @@ public class ProdutoController extends AbstractTableModel {
    }
        if(column == 3){
        return "Preco";
+   }
+       if(column == 4){
+       return "Editora";
    }
        return ""; //o metodo precisa de um retorno, se não entrar em nenhum if, ele retorna nada. 
     }

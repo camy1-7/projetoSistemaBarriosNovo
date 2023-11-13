@@ -5,32 +5,51 @@
  */
 package query;
 
-import bean.ClbUsuario;
-import dao.UsuarioDAO;
+
+import bean.ClbCliente;
+import bean.ClbVendas;
+import dao.ClienteDAO;
+import dao.VendasDAO;
+import java.util.ArrayList;
 import java.util.List;
-import view.UsuarioController;
+import tools.Util;
+import view.ClienteController;
+import view.VendasController;
 
 /**
  *
  * @author DELL
  */
-public class JDlgConsultaUsuario extends javax.swing.JDialog {
-    private UsuarioController usuarioController; //global a classe
-    UsuarioDAO usuarioDAO;
+public class JDlgConsultaVendas extends javax.swing.JDialog {
+    private VendasController vendasController; //global a classe
+    VendasDAO vendasDAO;
+    ClbVendas clbVendas;
+    ClienteDAO clienteDAO;
+    ClbCliente clbCliente;
     
     /**
      * Creates new form JDlgConsultaUsuario
      */
-    public JDlgConsultaUsuario(java.awt.Frame parent, boolean modal) {
+    public JDlgConsultaVendas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        setTitle("Consulta de Usuario");
-        usuarioDAO = new UsuarioDAO(); //criou o objeto usuarios_DAO
-        usuarioController = new UsuarioController(); //criei o usuarios controle   
-        List lista = usuarioDAO.listAll();
-        usuarioController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
-        jTable1.setModel(usuarioController); //agora o usuariosControle que controla a tabela
+        setTitle("Consulta de Vendas");
+        vendasDAO = new VendasDAO(); //criou o objeto usuarios_DAO
+        vendasController = new VendasController(); //criei o usuarios controle 
+        
+        //jCboClb_FkCliente.setSelectedIndex(-1); //começa vazio o comboBox
+        List lista = vendasDAO.listAll();
+        vendasController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
+        jTable1.setModel(vendasController); //agora o usuariosControle que controla a tabela
+        
+        clienteDAO = new ClienteDAO();
+        List listaCliente = clienteDAO.listAll();
+        for (int i = 0; i < listaCliente.size(); i++) {
+            jCboClb_FkCliente.addItem(((ClbCliente) listaCliente.get(i)));
+            
+        }
+        
     }
 
     /**
@@ -44,10 +63,10 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTxtClb_Nome = new javax.swing.JTextField();
+        jTxtClb_Valor = new javax.swing.JTextField();
         jBtnClb_Consultar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTxtClb_Cpf = new javax.swing.JTextField();
+        jCboClb_FkCliente = new javax.swing.JComboBox<ClbCliente>();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -55,7 +74,7 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jLabel1.setText("Nome:");
+        jLabel1.setText("Valor:");
 
         jBtnClb_Consultar.setText("Consultar");
         jBtnClb_Consultar.addActionListener(new java.awt.event.ActionListener() {
@@ -64,13 +83,7 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("CPF:");
-
-        jTxtClb_Cpf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTxtClb_CpfActionPerformed(evt);
-            }
-        });
+        jLabel2.setText("Cliente:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -80,17 +93,18 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jTxtClb_Nome, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                    .addComponent(jTxtClb_Valor, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(34, 34, 34)
                         .addComponent(jLabel2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTxtClb_Cpf, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBtnClb_Consultar)
-                        .addGap(26, 26, 26))))
+                        .addComponent(jCboClb_FkCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jBtnClb_Consultar)
+                .addGap(26, 26, 26))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,8 +118,8 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTxtClb_Nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTxtClb_Cpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTxtClb_Valor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCboClb_FkCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -142,32 +156,29 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
 
     private void jBtnClb_ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConsultarActionPerformed
         // TODO add your handling code here:
-         if(jTxtClb_Nome.getText().equals("") && jTxtClb_Cpf.getText().equals("")){
-            List lista = usuarioDAO.listAll();
-            usuarioController.setList(lista);
+
+        //Erro na parte de conversão do Object, não faz a pesquisa 
+        /*if(jTxtClb_Valor.getText().equals("") && jCboClb_FkCliente.getSelectedIndex() ==-1){
+            List lista = vendasDAO.listAll();
+            vendasController.setList(lista);
         }else{
-            if(!jTxtClb_Nome.getText().equals("") && !jTxtClb_Cpf.getText().equals("")){
-                List lista = usuarioDAO.listCpfNome(jTxtClb_Nome.getText(), jTxtClb_Cpf.getText());
-                usuarioController.setList(lista);
+            if(!jTxtClb_Valor.getText().equals("") && (jCboClb_FkCliente.getSelectedIndex() !=-1)){
+                List lista = vendasDAO.listValorCliente((Double.parseDouble(jTxtClb_Valor.getText())), (ClbCliente) jCboClb_FkCliente.getSelectedIndex());
+                vendasController.setList(lista);
             }else{
-                if(! jTxtClb_Nome.getText().equals("")){
-                    List lista = usuarioDAO.listNome(jTxtClb_Nome.getText()); //Criou uma lista e ta passando o metodo ListAll do Usuarios_DAO
-                    usuarioController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
+                if(! jTxtClb_Valor.getText().equals("")){
+                    List lista = vendasDAO.listValor((Double.parseDouble(jTxtClb_Valor.getText()))); //Criou uma lista e ta passando o metodo ListAll do Usuarios_DAO
+                    vendasController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
             }else{
-                if(! jTxtClb_Cpf.getText().equals("")){
-                    List lista = usuarioDAO.listCpf(jTxtClb_Cpf.getText()); //Criou uma lista e ta passando o metodo ListAll do Usuarios_DAO
-                    usuarioController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
+                if(jCboClb_FkCliente.getSelectedIndex() !=-1){
+                    List lista = vendasDAO.listCliente((ClbCliente) jCboClb_FkCliente.getSelectedIndex()); //Criou uma lista e ta passando o metodo ListAll do Usuarios_DAO
+                    vendasController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
                     }
                 }
             }
-        }
-        
+        }*/
         
     }//GEN-LAST:event_jBtnClb_ConsultarActionPerformed
-
-    private void jTxtClb_CpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtClb_CpfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTxtClb_CpfActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,20 +197,23 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDlgConsultaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDlgConsultaVendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDlgConsultaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDlgConsultaVendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDlgConsultaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDlgConsultaVendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDlgConsultaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDlgConsultaVendas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDlgConsultaUsuario dialog = new JDlgConsultaUsuario(new javax.swing.JFrame(), true);
+                JDlgConsultaVendas dialog = new JDlgConsultaVendas(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -213,12 +227,12 @@ public class JDlgConsultaUsuario extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnClb_Consultar;
+    private javax.swing.JComboBox<ClbCliente> jCboClb_FkCliente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTxtClb_Cpf;
-    private javax.swing.JTextField jTxtClb_Nome;
+    private javax.swing.JTextField jTxtClb_Valor;
     // End of variables declaration//GEN-END:variables
 }

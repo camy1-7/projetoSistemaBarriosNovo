@@ -65,4 +65,38 @@ public class VendedorDAO extends DAO_Abstract{
         return lista; //retorna a lista com os beans
     }
     
+        public List listCpf(String cpf){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbVendedor.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbCpf", "%" + cpf + "%")); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        //criteria.add(Restrictions.like("nome", nome, MatchMode.ANYWHERE)); 
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listSexo(int sexo){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbVendedor.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        criteria.add(Restrictions.eq("clbSexo", sexo )); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
+    public List listCpfSexo(String cpf, int sexo){ //parametro nome
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(ClbVendedor.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
+        criteria.add(Restrictions.like("clbCpf", "%" + cpf + "%"));
+        criteria.add(Restrictions.eq("clbSexo", sexo ));
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans
+    }
+    
 }

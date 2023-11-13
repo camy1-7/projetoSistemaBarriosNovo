@@ -75,6 +75,7 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
         clbVendedor.setClbSalario(Double.parseDouble( jTxtClb_Salario.getText()));
         clbVendedor.setClbSexo(jCboClb_Sexo.getSelectedIndex());
         clbVendedor.setClbTelefone(jFmtClb_Telefone.getText());
+     
         
         return clbVendedor; 
     }

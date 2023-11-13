@@ -231,7 +231,24 @@ public class ClbCliente  implements java.io.Serializable {
     public void setClbRenda(double clbRenda) {
         this.clbRenda = clbRenda;
     }
-
+    
+    //problema: o metodo toString, não recebe tipos de object e int 
+    @Override
+    public String toString(){
+        return this.clbNome;
+    }
+    
+    
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof ClbCliente){
+            ClbCliente clbCliente = (ClbCliente) object;
+            if(this.getClbIdcliente() == clbCliente.getClbIdcliente()){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 
