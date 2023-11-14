@@ -74,7 +74,7 @@ public class VendasDAO extends DAO_Abstract{
     
     public List listValorCliente(double valor, ClbCliente clbCliente){ //parametro nome
         session.beginTransaction();
-        Criteria criteria = session.createCriteria(ClbCliente.class); //importa o bean e a classe Criteria
+        Criteria criteria = session.createCriteria(ClbVendas.class); //importa o bean e a classe Criteria
         //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
         //coloca a % no começo e no final para achar esse "nome"! em todos os campos e mostrar todos os resultados que tiverem esse "nome" no começo/meio/fim
         criteria.add(Restrictions.eq("clbValorTotal", valor ));
@@ -98,7 +98,7 @@ public class VendasDAO extends DAO_Abstract{
     
     public List listCliente(ClbCliente clbCliente){ //parametro nome
         session.beginTransaction();
-        Criteria criteria = session.createCriteria(ClbCliente.class); //importa o bean e a classe Criteria
+        Criteria criteria = session.createCriteria(ClbVendas.class); //importa o bean e a classe Criteria
         //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
         criteria.add(Restrictions.eq("clbCliente", clbCliente )); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
         List lista = criteria.list(); //cria uma lista com os registros do banco de dados 

@@ -158,12 +158,12 @@ public class JDlgConsultaVendas extends javax.swing.JDialog {
         // TODO add your handling code here:
 
         //Erro na parte de conversão do Object, não faz a pesquisa 
-        /*if(jTxtClb_Valor.getText().equals("") && jCboClb_FkCliente.getSelectedIndex() ==-1){
+        if(jTxtClb_Valor.getText().equals("") && jCboClb_FkCliente.getSelectedIndex() ==-1){
             List lista = vendasDAO.listAll();
             vendasController.setList(lista);
         }else{
             if(!jTxtClb_Valor.getText().equals("") && (jCboClb_FkCliente.getSelectedIndex() !=-1)){
-                List lista = vendasDAO.listValorCliente((Double.parseDouble(jTxtClb_Valor.getText())), (ClbCliente) jCboClb_FkCliente.getSelectedIndex());
+                List lista = vendasDAO.listValorCliente((Double.parseDouble(jTxtClb_Valor.getText())), (ClbCliente) jCboClb_FkCliente.getSelectedItem());
                 vendasController.setList(lista);
             }else{
                 if(! jTxtClb_Valor.getText().equals("")){
@@ -171,12 +171,12 @@ public class JDlgConsultaVendas extends javax.swing.JDialog {
                     vendasController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
             }else{
                 if(jCboClb_FkCliente.getSelectedIndex() !=-1){
-                    List lista = vendasDAO.listCliente((ClbCliente) jCboClb_FkCliente.getSelectedIndex()); //Criou uma lista e ta passando o metodo ListAll do Usuarios_DAO
+                    List lista = vendasDAO.listCliente((ClbCliente) jCboClb_FkCliente.getSelectedItem()); //Criou uma lista e ta passando o metodo ListAll do Usuarios_DAO
                     vendasController.setList(lista); //passando o a lista para o usuariosControle -> se retorna a lista para que as informações sejam mostradas e a lista vem do Usuarios_DAO
                     }
                 }
             }
-        }*/
+        }
         
     }//GEN-LAST:event_jBtnClb_ConsultarActionPerformed
 

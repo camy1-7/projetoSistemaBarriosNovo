@@ -869,7 +869,7 @@ public class JDlgCliente extends javax.swing.JDialog {
         }
         limparCampos();*/
         
-        if(Util.perguntar("Deseja excluir o usuário?") == true){
+        if(Util.perguntar("Deseja excluir o cliente?") == true){
             clbCliente = viewBean(); //chama a variavel golbal  o bean 
             clienteDAO.delete(clbCliente);
         }else{
