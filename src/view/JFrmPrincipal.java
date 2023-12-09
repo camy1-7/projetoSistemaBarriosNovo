@@ -41,6 +41,7 @@ public class JFrmPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
@@ -112,6 +113,17 @@ public class JFrmPrincipal extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jButton3);
+
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/visa.png"))); // NOI18N
+        jButton11.setFocusable(false);
+        jButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jButton11);
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clienteconsulta.png"))); // NOI18N
         jButton7.setFocusable(false);
@@ -247,6 +259,11 @@ public class JFrmPrincipal extends javax.swing.JFrame {
 
         jMnuMovimento.setMnemonic('M');
         jMnuMovimento.setText("Movimento");
+        jMnuMovimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMnuMovimentoActionPerformed(evt);
+            }
+        });
 
         jMnuVendas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK));
         jMnuVendas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/visa.png"))); // NOI18N
@@ -374,8 +391,8 @@ public class JFrmPrincipal extends javax.swing.JFrame {
     private void jMnuVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuVendasActionPerformed
         // TODO add your handling code here:
         //set chama a tela de Vendas
-        /*JDlgVendas jDlgVendas = new JDlgVendas(null, true);
-        jDlgVendas.setVisible(true);*/
+        JDlgVendas jDlgVendas = new JDlgVendas(null, true);
+        jDlgVendas.setVisible(true);
     }//GEN-LAST:event_jMnuVendasActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -467,6 +484,17 @@ public class JFrmPrincipal extends javax.swing.JFrame {
         jDlgConsultaVendedor.setVisible(true);
     }//GEN-LAST:event_jButton9ActionPerformed
 
+    private void jMnuMovimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuMovimentoActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jMnuMovimentoActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        JDlgVendas jDlgVendas = new JDlgVendas(null, true);
+        jDlgVendas.setVisible(true);
+    }//GEN-LAST:event_jButton11ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -508,6 +536,7 @@ public class JFrmPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

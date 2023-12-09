@@ -5,6 +5,8 @@
  */
 package tools;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -78,12 +80,19 @@ public class Util { //ao vc atribuir o comando "STATIC" ao metodo, ele não prec
         return String.valueOf(num);
     }
     
-    public static Date strDate(double card){
-      return null; 
+    public static Date strDate(String cad){
+      try{
+                SimpleDateFormat formato = new SimpleDateFormat("dd/mm/yyyy");
+                return formato.parse(cad);
+            }catch (ParseException ex){
+                System.out.println("Erro na data " + ex.getMessage());
+            }
+      return null;
     }
     
-    public static String dateStr(Date num){
-        return "";
+    public static String dateStr(Date data){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/mm/yyyy");
+            return formato.format(data);
     }
     
 }

@@ -120,7 +120,7 @@ public class JDlgCliente extends javax.swing.JDialog {
         
     }*/
     
-     public void limparCampos(){
+     /*public void limparCampos(){
         jTxtClb_IdCliente.setText("");
         jTxtClb_Nome.setText("");
         jFmtClb_Telefone.setText("");
@@ -136,10 +136,10 @@ public class JDlgCliente extends javax.swing.JDialog {
         jCboClb_EstadoCivil.setSelectedIndex(-1);
         jCboClb_ComposicaoFamiliar.setSelectedIndex(-1);
         jTxtClb_Renda.setText("");
-    }
+    }*/
      
     public ClbCliente viewBean(){
-        ClbCliente clbCliente = new ClbCliente(); //cria o bean 
+        clbCliente = new ClbCliente(); //cria o bean 
         
         //pega oq esta na tela e joga para o bean
         int id = Integer.valueOf(jTxtClb_IdCliente.getText());
@@ -504,7 +504,7 @@ public class JDlgCliente extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jLabel10)
@@ -513,7 +513,7 @@ public class JDlgCliente extends javax.swing.JDialog {
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3)
-                            .addComponent(jTxtClb_IdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(jTxtClb_IdCliente)
                             .addComponent(jLabel1)
                             .addComponent(jLabel7)
                             .addComponent(jLabel11)
@@ -523,7 +523,7 @@ public class JDlgCliente extends javax.swing.JDialog {
                             .addComponent(jCboClb_Sexo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel16)
                             .addComponent(jCboClb_EstadoCivil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jFmtClb_Telefone))
+                            .addComponent(jFmtClb_Telefone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(56, 56, 56)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel4)
@@ -541,9 +541,9 @@ public class JDlgCliente extends javax.swing.JDialog {
                                 .addGap(43, 43, 43)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel5)
-                                    .addComponent(jFmtClb_Rg, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                                    .addComponent(jFmtClb_Rg)
                                     .addComponent(jLabel9)
-                                    .addComponent(jTxtClb_Email)))
+                                    .addComponent(jTxtClb_Email, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel17)
@@ -551,20 +551,22 @@ public class JDlgCliente extends javax.swing.JDialog {
                                 .addGap(57, 57, 57)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel18)
-                                    .addComponent(jTxtClb_Renda, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBtnClb_Incluir)
-                        .addGap(18, 18, 18)
-                        .addComponent(jBtnClb_Alterar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jBtnClb_Excluir)
-                        .addGap(18, 18, 18)
-                        .addComponent(jBtnClb_Confirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jBtnClb_Cancelar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jBtnClb_Pesquisar)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                                    .addComponent(jTxtClb_Renda, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jBtnClb_Incluir)
+                .addGap(18, 18, 18)
+                .addComponent(jBtnClb_Alterar)
+                .addGap(26, 26, 26)
+                .addComponent(jBtnClb_Excluir)
+                .addGap(18, 18, 18)
+                .addComponent(jBtnClb_Confirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jBtnClb_Cancelar)
+                .addGap(18, 18, 18)
+                .addComponent(jBtnClb_Pesquisar)
+                .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

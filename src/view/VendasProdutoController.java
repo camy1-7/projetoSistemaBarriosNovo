@@ -5,7 +5,8 @@
  */
 package view;
 
-import bean.ClbProduto;
+import bean.ClbVendas;
+import bean.ClbVendasProduto;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
@@ -13,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
  *
  * @author DELL
  */
-public class ProdutoController extends AbstractTableModel {
+public class VendasProdutoController extends AbstractTableModel{
     //criasse esses metodos pq é o minimo para se criar uma tabela, ter o numero de linhas, colunas e conteudo
     
     List lista; // cria o atributo lista 
@@ -23,12 +24,12 @@ public class ProdutoController extends AbstractTableModel {
         this.fireTableDataChanged(); //para atualizar a lista 
     }
     
-    public ClbProduto getBean(int row){ //pega o bena para saber a posição de acordo com a linha da lista e do jTable 
-        return (ClbProduto) lista.get(row); //converte o get que retorna object em PRODUTO
+    public ClbVendasProduto getBean(int row){ //pega o bena para saber a posição de acordo com a linha da lista e do jTable 
+        return (ClbVendasProduto) lista.get(row); //converte o get que retorna object em VENDAS 
     }
     
-    public void addBean(ClbProduto clbProduto){ //adiciona o bean no banco de dados
-        lista.add(clbProduto);
+    public void addBean(ClbVendasProduto clbVendasProduto){ //adiciona o bean no banco de dados
+        lista.add(clbVendasProduto);
         this.fireTableDataChanged(); //atualiza o0 conteudo da tabela 
     }
     
@@ -37,39 +38,37 @@ public class ProdutoController extends AbstractTableModel {
         this.fireTableDataChanged();
     }
     
-    public void updateBean(int index, ClbProduto clbProduto){ //utilizamos a linha selecionada e o bean para podermos definir a alteração
-        lista.set(index, clbProduto); //
+    public void updateBean(int index, ClbVendasProduto clbVendasProduto){ //utilizamos a linha selecionada e o bean para podermos definir a alteração
+        lista.set(index, clbVendasProduto); //
         this.fireTableDataChanged();//atualiza a tabela 
     }
 
     @Override
-    public int getRowCount() {//pegar quantidade de linhas
+    public int getRowCount() { //pegar quantidade de linhas
         return lista.size(); // numero de linhas
     }
 
     @Override
     public int getColumnCount() {//pegar quantidade de colunas
-        return 5; //retorna o numero de colunas
+        return 4; //retorna o numero de colunas
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         //pegar os valores -> conteúdo
-            ClbProduto clbProduto = (ClbProduto) lista.get(rowIndex); //cria o ben e passa a lista para ele poder retornar os bean em cada coluna
-        if(columnIndex == 0){ //compara a posição da coluna para atribuir o valor
-       return clbProduto.getClbIdproduto(); //retorna o id 
+        ClbVendasProduto clbVendasProduto = (ClbVendasProduto) lista.get(rowIndex); //cria o bean e passa a lista para ele poder retornar os bean em cada coluna
+        if(columnIndex == 0){
+       return clbVendasProduto.getClbProduto();
    }
         if(columnIndex == 1){
-       return clbProduto.getClbNomeProduto(); //retorna o nome
+       return clbVendasProduto.getClbQuantidade(); //retorna O FK PRODUTO
    }
         if(columnIndex == 2){
-       return clbProduto.getClbAutor(); //retorna o autor do livro
+       return clbVendasProduto.getClbValorUnitario(); //retorna a quantidade
    }
-        if(columnIndex == 3){
-       return clbProduto.getClbPreco(); //retorna o preço do produto
-   }
-        if(columnIndex == 4){
-       return clbProduto.getClbEditora(); //retorna o preço do produto
+        if(columnIndex == 3){ //para mostrar o "total" fazemos a mesma formula apresentada nos metodos da teçla IA 
+            //devemos multiplicar a quantidade de produtos X o valor unitario, assim mostrando na tela o resultado
+       return clbVendasProduto.getClbValorUnitario() * clbVendasProduto.getClbQuantidade(); //retorna o valor unitario 
    }
         return ""; //o metodo precisa de um retorno, se não entrar em nenhum if, ele retorna nada. 
     }
@@ -77,19 +76,16 @@ public class ProdutoController extends AbstractTableModel {
     @Override
     public String getColumnName(int column){ //o parametro é pra definir a coluna que vai passar
         if(column == 0){ //compara qual é a coluna que será passado o nome. começando na posição 0 
-       return "Id Produto";
+       return "Produto: ";
    }
        if(column == 1){
-       return "Nome do Produto";
+       return "Quantidade: ";
    }
        if(column == 2){
-       return "Autor";
+       return "Valor Unitário: ";
    }
        if(column == 3){
-       return "Preco";
-   }
-       if(column == 4){
-       return "Editora";
+       return "Valor Total: ";
    }
        return ""; //o metodo precisa de um retorno, se não entrar em nenhum if, ele retorna nada. 
     }

@@ -38,6 +38,10 @@ public class JDlgVendedor extends javax.swing.JDialog {
         jTable1.setModel(vendedorController);
     }
     
+    public int getSelectedRowProd(){
+            return jTable1.getSelectedRow();
+        }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,15 +126,32 @@ public class JDlgVendedor extends javax.swing.JDialog {
     private void jBtnClb_AlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_AlterarActionPerformed
         // TODO add your handling code here:
         //criando a tela de VendedorIA
+        jDlgVendedorIA = new JDlgVendedorIA(null, true);
         jDlgVendedorIA.setTitle("Alteração");
+        jDlgVendedorIA.incluindo = false;
+        //importante ter  -> o this é a tela jDlgUsuarios (o this se refre a si mesmo)
+        jDlgVendedorIA.setTelaAnterior(this);
+        int rowSel = jTable1.getSelectedRow(); // cria uma variavel para receber os beans da Linha selecionada
+        clbVendedor = (ClbVendedor) vendedorController.getBean(rowSel); //Pega os beans e manda para o controller -> para poder fazer o update
+        jDlgVendedorIA.beanView(clbVendedor); //retorna os beans da tela, para serem mostradas 
         jDlgVendedorIA.setVisible(true);
+        
+        //atualizar a lista no jtable
+        List lista = vendedorDAO.listAll();
+        vendedorController.setList(lista);
+        
     }//GEN-LAST:event_jBtnClb_AlterarActionPerformed
 
     private void jBtnClb_IncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_IncluirActionPerformed
         // TODO add your handling code here:
         //criando a tela de VendedorIA
+        jDlgVendedorIA = new JDlgVendedorIA(null, true);
         jDlgVendedorIA.setTitle("Inclusão");
+        jDlgVendedorIA.incluindo = true;
+        jDlgVendedorIA.setTelaAnterior(this);
         jDlgVendedorIA.setVisible(true);
+
+        //atualizar a lista no jtable
         List lista = vendedorDAO.listAll();
         vendedorController.setList(lista);
     }//GEN-LAST:event_jBtnClb_IncluirActionPerformed

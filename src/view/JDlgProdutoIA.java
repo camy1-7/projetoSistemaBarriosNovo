@@ -8,6 +8,8 @@ package view;
 import bean.ClbProduto;
 import dao.ProdutoDAO;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import tools.Util;
 
 /**
@@ -16,8 +18,12 @@ import tools.Util;
  */
 public class JDlgProdutoIA extends javax.swing.JDialog {
 
+    public JDlgProduto jDlgProduto;
     ProdutoDAO produtoDAO;
     ClbProduto clbProduto;
+    ProdutoController produtoController;
+    public boolean incluindo;
+    
     
     
     /**
@@ -29,6 +35,13 @@ public class JDlgProdutoIA extends javax.swing.JDialog {
         setTitle("Incluisão ou Alteração");//o titulo muda de acordo com o botão que seja escolhido na tela de UsuariosNovo
         setLocationRelativeTo(null);
         produtoDAO = new ProdutoDAO();
+        produtoController = new ProdutoController();
+        
+        
+    }
+    
+    public void setTelaAnterior(JDlgProduto jDlgProduto){
+        this.jDlgProduto = jDlgProduto;
     }
     
     public ClbProduto viewBean(){
@@ -43,9 +56,25 @@ public class JDlgProdutoIA extends javax.swing.JDialog {
         clbProduto.setClbPreco(Double.parseDouble( jTxtClb_Preco.getText())); 
         clbProduto.setClbAssunto(jTxtClb_Assunto.getText());
         
-        
         return clbProduto; 
     }
+    
+    public void beanView(ClbProduto clbProduto){//pega do bean e joga na tela -- o parametro é o bean
+        //mostrar na tela os dados
+        String valor = String.valueOf(clbProduto.getClbIdproduto()); //converter inteiro para string por causa do Text -- a string valor recebe o valor do inteiro
+        jTxtClb_IdProduto.setText(valor); 
+        jTxtClb_Nome.setText(clbProduto.getClbNomeProduto());
+        jTxtClb_Autor.setText(clbProduto.getClbAutor());
+        jTxtClb_Editora.setText(clbProduto.getClbEditora());
+        jTxtClb_Assunto.setText(clbProduto.getClbAssunto());
+        jTxtClb_Preco.setText(String.valueOf(clbProduto.getClbPreco()));
+        
+        //quando o for pegar os beans e jogar na tela, ele chama o listProduto e manda para a tabela todos os dados tambem
+        produtoDAO = new ProdutoDAO();
+        List listaProd = (List) produtoDAO.listAll();
+        produtoController.setList(listaProd);
+        
+        }
     
 
     /**
@@ -326,9 +355,35 @@ public class JDlgProdutoIA extends javax.swing.JDialog {
 
     private void jBtnClb_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConfirmarActionPerformed
         // TODO add your handling code here:
-        clbProduto = viewBean();
-        produtoDAO.insert(clbProduto);
-        setVisible(false);
+        clbProduto = new ClbProduto();
+        clbProduto.setClbIdproduto(Util.strInt(jTxtClb_IdProduto.getText()));
+        clbProduto.setClbNomeProduto(jTxtClb_Nome.getText());
+        clbProduto.setClbAutor(jTxtClb_Autor.getText());
+        clbProduto.setClbEditora(jTxtClb_Editora.getText());
+        clbProduto.setClbPreco(Double.parseDouble(jTxtClb_Preco.getText()));
+        clbProduto.setClbAssunto(jTxtClb_Assunto.getText());
+        
+        //Nesse if ele fara a verifcação do tipo de operação que a teça deve fazer sendo INCLUSÃO ou ALTERAÇÃO
+        if(incluindo == true){
+            //utitiliza os metodos de adicionar que criamos na tela Controller
+            jDlgProduto.produtoController.addBean(clbProduto);
+            produtoDAO.insert(clbProduto); //salva a no0va inclusão no bd
+            //atualizar a lista no jtable
+            List lista = produtoDAO.listAll();
+            produtoController.setList(lista);
+        }else{
+            //utiliza o metodo alterar que criamos na tela controller, 
+            //para isso pega a linha selecionada na tabela e substitui o bean
+            produtoDAO.delete(clbProduto); //exclui tudo para poder fazer a alteração
+            jDlgProduto.produtoController.updateBean(jDlgProduto.getSelectedRowProd(), clbProduto);
+            produtoDAO.insert(clbProduto); //envia as novas alterações e salva no bd
+            //atualizar a lista no jtable
+            List lista = produtoDAO.listAll();
+            produtoController.setList(lista);
+        }
+        
+        setVisible(false); //fecha a tela 
+        
     }//GEN-LAST:event_jBtnClb_ConfirmarActionPerformed
 
     /**

@@ -25,6 +25,7 @@ public class JDlgProduto extends javax.swing.JDialog {
     ProdutoController produtoController;
     JDlgProdutoIA jDlgProdutoIA;
     
+    
     public JDlgProduto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -35,9 +36,16 @@ public class JDlgProduto extends javax.swing.JDialog {
         produtoController = new ProdutoController();
         produtoDAO = new ProdutoDAO();
         List lista = produtoDAO.listAll();
+        //List lista = produtoDAO.listProdutos(clbProduto);
         produtoController.setList(lista);
         jTable1.setModel(produtoController);
+        
     }
+    
+    public int getSelectedRowProd(){
+            return jTable1.getSelectedRow();
+        }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -120,18 +128,38 @@ public class JDlgProduto extends javax.swing.JDialog {
     private void jBtnClb_IncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_IncluirActionPerformed
         // TODO add your handling code here:
         //criando a tela de ProdutoIA
+        jDlgProdutoIA = new JDlgProdutoIA(null, true);
         jDlgProdutoIA.setTitle("Inclusão");
+        jDlgProdutoIA.incluindo = true;
+        jDlgProdutoIA.setTelaAnterior(this);
         jDlgProdutoIA.setVisible(true);
+
+            
         //atualizar a lista no jtable
         List lista = produtoDAO.listAll();
         produtoController.setList(lista);
+
     }//GEN-LAST:event_jBtnClb_IncluirActionPerformed
 
     private void jBtnClb_AlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_AlterarActionPerformed
         // TODO add your handling code here:
         //criando a tela de ProdutoIA
+                    
+        jDlgProdutoIA = new JDlgProdutoIA(null, true);
         jDlgProdutoIA.setTitle("Alteração");
+        jDlgProdutoIA.incluindo = false;
+        //importante ter  -> o this é a tela jDlgUsuarios (o this se refre a si mesmo)
+        jDlgProdutoIA.setTelaAnterior(this);
+        int rowSel = jTable1.getSelectedRow(); // cria uma variavel para receber os beans da Linha selecionada
+        clbProduto = (ClbProduto) produtoController.getBean(rowSel); //Pega os beans e manda para o controller -> para poder fazer o update
+        jDlgProdutoIA.beanView(clbProduto); //retorna os beans da tela, para serem mostradas 
         jDlgProdutoIA.setVisible(true);
+        
+        //atualizar a lista no jtable
+        List lista = produtoDAO.listAll();
+        produtoController.setList(lista);
+        
+        
     }//GEN-LAST:event_jBtnClb_AlterarActionPerformed
 
     private void jBtnClb_ExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ExcluirActionPerformed

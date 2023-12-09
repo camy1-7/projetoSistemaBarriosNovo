@@ -106,8 +106,23 @@ public class ClbProduto  implements java.io.Serializable {
     public void setClbPreco(double clbPreco) {
         this.clbPreco = clbPreco;
     }
-
-
+    
+ @Override
+    public String toString(){
+        return this.clbNomeProduto;
+    }
+    
+    
+    @Override
+    public boolean equals(Object object){
+        if(object instanceof ClbProduto){
+            ClbProduto clbProduto = (ClbProduto) object;
+            if(this.getClbIdproduto()== clbProduto.getClbIdproduto()){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 

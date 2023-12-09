@@ -26,6 +26,21 @@ public class VendedorController extends AbstractTableModel{
     public ClbVendedor getBean(int row){ //pega o bena para saber a posição de acordo com a linha da lista e do jTable 
         return (ClbVendedor) lista.get(row); //converte o get que retorna object em vendedor
     }
+    
+    public void addBean(ClbVendedor clbVendedor){ //adiciona o bean no banco de dados
+        lista.add(clbVendedor);
+        this.fireTableDataChanged(); //atualiza o0 conteudo da tabela 
+    }
+    
+    public void removeBean(int index){ //remove a linha selecionada na tabela 
+        lista.remove(index);
+        this.fireTableDataChanged();
+    }
+    
+    public void updateBean(int index, ClbVendedor clbVendedor){ //utilizamos a linha selecionada e o bean para podermos definir a alteração
+        lista.set(index, clbVendedor); //
+        this.fireTableDataChanged();//atualiza a tabela 
+    }
 
     @Override
     public int getRowCount() {//pegar quantidade de linhas

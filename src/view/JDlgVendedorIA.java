@@ -5,11 +5,14 @@
  */
 package view;
 
+import bean.ClbProduto;
 import bean.ClbVendedor;
+import dao.ProdutoDAO;
 import dao.VendedorDAO;
 import java.awt.Color;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.DefaultFormatterFactory;
@@ -22,8 +25,12 @@ import tools.Util;
  */
 public class JDlgVendedorIA extends javax.swing.JDialog {
 
+    public boolean incluindo;
+    public JDlgVendedor jDlgVendedor;
+    
     VendedorDAO vendedorDAO;
     ClbVendedor clbVendedor;
+    VendedorController vendedorController;
     
     MaskFormatter mascaraCpf; // declarei um objeto -- mascara do cpf ja adicionei a importação
     MaskFormatter mascaraDataNascimento;
@@ -39,6 +46,7 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         
         vendedorDAO = new VendedorDAO();
+        vendedorController = new VendedorController();
         
         try {
             mascaraCpf = new MaskFormatter("###.###.###-##");
@@ -54,8 +62,12 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
        jFmtClb_Rg.setFormatterFactory(new DefaultFormatterFactory(mascaraRg));
     }
     
+    public void setTelaAnterior(JDlgVendedor jDlgVendedor){
+        this.jDlgVendedor = jDlgVendedor;
+    }
+    
     public ClbVendedor viewBean(){
-        ClbVendedor clbVendedor = new ClbVendedor(); //cria o bean 
+        clbVendedor = new ClbVendedor(); //cria o bean 
         
         //pega oq esta na tela e joga para o bean
         int id = Integer.valueOf(jTxtClb_IdVendedor.getText());
@@ -79,6 +91,29 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
         
         return clbVendedor; 
     }
+    
+    public void beanView(ClbVendedor clbVendedor){//pega do bean e joga na tela -- o parametro é o bean
+        //mostrar na tela os dados
+        String valor = String.valueOf(clbVendedor.getClbIdvendedor()); //converter inteiro para string por causa do Text -- a string valor recebe o valor do inteiro
+        jTxtClb_IdVendedor.setText(valor); 
+        jTxtClb_Nome.setText(clbVendedor.getClbNomeVendedor());
+        jFmtClb_Telefone.setText(clbVendedor.getClbTelefone());
+        jFmtClb_Cpf.setText(clbVendedor.getClbCpf());
+        jFmtClb_Rg.setText(clbVendedor.getClbRg());
+        jTxtClb_Email.setText(clbVendedor.getClbEmail());
+        jCboClb_Sexo.setSelectedIndex(clbVendedor.getClbSexo());
+        
+        //data para string
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); //cria o método e utiliza ele no campo do bean que vai ser retornado na tela
+        jFmtClb_Nascimento.setText(formato.format(clbVendedor.getClbDataNascimento())); //cria o metodo format que faz a conversão
+        jTxtClb_Salario.setText(String.valueOf(clbVendedor.getClbSalario()));
+        
+        //quando o for pegar os beans e jogar na tela, ele chama o listProduto e manda para a tabela todos os dados tambem
+        vendedorDAO = new VendedorDAO();
+        List listaProd = (List) vendedorDAO.listAll();
+        vendedorController.setList(listaProd);
+        
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -425,9 +460,39 @@ public class JDlgVendedorIA extends javax.swing.JDialog {
 
     private void jBtnClb_ConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_ConfirmarActionPerformed
         // TODO add your handling code here:
-        ClbVendedor clbVendedor = viewBean();
-        vendedorDAO.insert(clbVendedor);
-        setVisible(false);
+        clbVendedor = new ClbVendedor();
+        clbVendedor.setClbIdvendedor(Util.strInt(jTxtClb_IdVendedor.getText()));
+        clbVendedor.setClbNomeVendedor(jTxtClb_Nome.getText());
+        clbVendedor.setClbTelefone(jFmtClb_Telefone.getText());
+        clbVendedor.setClbDataNascimento(Util.strDate(jFmtClb_Nascimento.getText()));
+        clbVendedor.setClbCpf(jFmtClb_Cpf.getText());
+        clbVendedor.setClbRg(jFmtClb_Rg.getText());
+        clbVendedor.setClbSexo(jCboClb_Sexo.getSelectedIndex());
+        clbVendedor.setClbSalario(Double.parseDouble(jTxtClb_Salario.getText()));
+        clbVendedor.setClbEmail(jTxtClb_Email.getText());
+        
+        //Nesse if ele fara a verifcação do tipo de operação que a teça deve fazer sendo INCLUSÃO ou ALTERAÇÃO
+        if(incluindo == true){
+            //utitiliza os metodos de adicionar que criamos na tela Controller
+            jDlgVendedor.vendedorController.addBean(clbVendedor);
+            vendedorDAO.insert(clbVendedor); //salva a no0va inclusão no bd
+            //atualizar a lista no jtable
+            List lista = vendedorDAO.listAll();
+            vendedorController.setList(lista);
+            //Util.limparCampos(jTxtClb_IdVendedor, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Nascimento, jFmtClb_Cpf, jFmtClb_Rg, jTxtClb_Salario,jTxtClb_Email);
+        }else{
+            //utiliza o metodo alterar que criamos na tela controller, 
+            //para isso pega a linha selecionada na tabela e substitui o bean
+            vendedorDAO.delete(clbVendedor); //exclui tudo para poder fazer a alteração
+            jDlgVendedor.vendedorController.updateBean(jDlgVendedor.getSelectedRowProd(), clbVendedor);
+            vendedorDAO.insert(clbVendedor); //envia as novas alterações e salva no bd
+            //atualizar a lista no jtable
+            List lista = vendedorDAO.listAll();
+            vendedorController.setList(lista);
+            //Util.limparCampos(jTxtClb_IdVendedor, jTxtClb_Nome, jFmtClb_Telefone, jFmtClb_Nascimento, jFmtClb_Cpf, jFmtClb_Rg, jTxtClb_Salario,jTxtClb_Email);
+        }
+        
+        setVisible(false); //fecha a tela 
     }//GEN-LAST:event_jBtnClb_ConfirmarActionPerformed
 
     private void jBtnClb_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnClb_CancelarActionPerformed

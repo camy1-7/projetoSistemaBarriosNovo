@@ -100,5 +100,16 @@ public class ProdutoDAO extends DAO_Abstract{
         return lista; //retorna a lista com os beans
     }
     
+    public List listProdutos(ClbProduto clbProduto){ //metodo para trazer os produtos daquele pedido -> um pedido pode ter varios produtos
+        session.beginTransaction(); //sempre faz uma transação, independente se manda ou pega registros
+        //antes o comando sql que fazia o listA era o "SELECT * from tabela WHERE id" que agora substitui pela criação de um objeto
+        Criteria criteria = session.createCriteria(ClbProduto.class); //importa o bean e a classe Criteria
+        //o eq é o equals pq o parametro tem que ser igual ao campo do bean 
+        criteria.add(Restrictions.eq("clbProduto", clbProduto)); //adiciona uma Restriction que seria uma restrição, que substitui a clausala WHERE - é uma classe statica que não instancia
+        List lista = criteria.list(); //cria uma lista com os registros do banco de dados 
+        session.getTransaction().commit();
+        return lista; //retorna a lista com os beans --MUDEI PQ ESTAVA ERRRADO 
+    }
+    
     
 }
